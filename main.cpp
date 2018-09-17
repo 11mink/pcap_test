@@ -1,5 +1,6 @@
 #include <pcap.h>
 #include <netinet/if_ether.h>
+#include <netinet/ether.h>
 #include <netinet/ip.h>
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
@@ -19,9 +20,7 @@ void dump_payload(u_char*p, int len){
 }
 
 void print_mac(u_char * p){
-	for(int i=0; i<5; i++)
-		printf("%02x:",p[i]);
-	printf("%02x\n",p[5]);
+		printf("%02x:%02x:%02x:%02x:%02x:%02x\n",p[0],p[1],p[2],p[3],p[4],p[5]);
 }
 	
 void print_packet(u_char * p, int p_size){
@@ -39,8 +38,8 @@ void print_packet(u_char * p, int p_size){
 	printf("[MAC dst] : ");print_mac(ehdr->ether_dhost);
 	printf("[IP src] : %s\n", inet_ntoa(ihdr->ip_src));
 	printf("[IP dst] : %s\n", inet_ntoa(ihdr->ip_dst));
-	printf("[Port src] : %hu\n", htons(thdr->th_sport));
-	printf("[Port dst] : %hu\n", htons(thdr->th_dport));
+	printf("[Port src] : %hu\n", ntohs(thdr->th_sport));
+	printf("[Port dst] : %hu\n", ntohs(thdr->th_dport));
 	dump_payload(pyld, p_size - hdrsize);
 	printf("--------------------------------------------------\n\n\n");
 }
