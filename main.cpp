@@ -5,16 +5,6 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 
-/*void dump(u_char*p, int len){
-	for(int i=0 ; i<len ; i++){
-		printf("%02x ", *p);
-		p++;
-		if((i & 0x0f) == 0x0f)
-			printf("\n");
-	}
-	printf("\n");
-}*/
-
 void dump_payload(u_char*p, int len){
 	if(len<=0) return;
 	printf("[Data] : \n");
@@ -45,17 +35,12 @@ void print_packet(u_char * p, int p_size){
 	if (ihdr->ip_p != IPPROTO_TCP) return;
 	
 	printf("--------------------------------------------------\n");
-	printf("[MAC src] : ");
-	print_mac(ehdr->ether_shost);
-	printf("[MAC dst] : ");
-	print_mac(ehdr->ether_dhost);
-
+	printf("[MAC src] : ");print_mac(ehdr->ether_shost);
+	printf("[MAC dst] : ");print_mac(ehdr->ether_dhost);
 	printf("[IP src] : %s\n", inet_ntoa(ihdr->ip_src));
 	printf("[IP dst] : %s\n", inet_ntoa(ihdr->ip_dst));
-
 	printf("[Port src] : %hu\n", htons(thdr->th_sport));
 	printf("[Port dst] : %hu\n", htons(thdr->th_dport));
-
 	dump_payload(pyld, p_size - hdrsize);
 	printf("--------------------------------------------------\n\n\n");
 }
