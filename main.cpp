@@ -29,7 +29,7 @@ void print_packet(u_char * p, int p_size){
 	int hdrsize = sizeof(ether_header)+sizeof(ip)+thdr->th_off*4;
 	u_char * pyld = p + hdrsize;
 
-	if (htons(ehdr->ether_type) != ETHERTYPE_IP) return;
+	if (ntohs(ehdr->ether_type) != ETHERTYPE_IP) return;
 	if (ihdr->ip_p != IPPROTO_TCP) return;
 	
 	printf("--------------------------------------------------\n");
