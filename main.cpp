@@ -25,8 +25,8 @@ void print_mac(u_char * p){
 void print_packet(u_char * p, int p_size){
 	struct ether_header * ehdr = (struct ether_header *) p;
 	struct ip * ihdr = (struct ip*)(p+sizeof(ether_header));
-	struct tcphdr * thdr = (struct tcphdr*)(p+sizeof(ether_header)+sizeof(ip));
-	int hdrsize = sizeof(ether_header)+sizeof(ip)+thdr->th_off*4;
+	struct tcphdr * thdr = (struct tcphdr*)(p+sizeof(ether_header)+ihdr->ip_hl*4);
+	int hdrsize = sizeof(ether_header)+ihdr->ip_hl*4+thdr->th_off*4;
 	u_char * pyld = p + hdrsize;
 
 	if (ntohs(ehdr->ether_type) != ETHERTYPE_IP) return;
