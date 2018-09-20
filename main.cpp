@@ -33,8 +33,8 @@ void print_packet(uint8_t * p){
 	struct ether_header * ehdr = (struct ether_header *) p;
 	struct ip * ihdr = (struct ip*)((uint8_t*)ehdr + sizeof(ether_header));
 	struct tcphdr * thdr = (struct tcphdr*)((uint8_t*)ihdr + ihdr->ip_hl*4);
-	int datalen = ntohs(ihdr->ip_len) - ihdr->ip_hl*4 - thdr->th_off*4;
 	uint8_t * data = (uint8_t*)thdr + thdr->th_off*4;
+	int32_t data_len = ntohs(ihdr->ip_len) - ihdr->ip_hl*4 - thdr->th_off*4;
 
 	if (ntohs(ehdr->ether_type) != ETHERTYPE_IP) return;
 	if (ihdr->ip_p != IPPROTO_TCP) return;
@@ -47,7 +47,7 @@ void print_packet(uint8_t * p){
 	printf("[Port src] : %hu\n", ntohs(thdr->th_sport));
 	printf("[Port dst] : %hu\n", ntohs(thdr->th_dport));
 	printf("[Data] : ");
-	dump_data(data, min(datalen,32));
+	dump_data(data, min(data_len,32));
 	printf("------------------------------------------------\n\n\n");
 }
 
