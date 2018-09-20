@@ -57,16 +57,16 @@ void usage() {
 }
 
 int main(int argc, char * argv[]){
-/*
+
 	if (argc != 2) {
     usage();
     return -1;
   }
-*/
+
   char* dev = argv[1];
   char errbuf[PCAP_ERRBUF_SIZE];
-  //pcap_t* handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
-  pcap_t * handle = pcap_open_offline("/home/mink/pcap_test/tcp-port-80-test.gilgil.pcap",errbuf);
+  pcap_t* handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
+  //pcap_t * handle = pcap_open_offline("/home/mink/pcap_test/tcp-port-80-test.gilgil.pcap",errbuf);
   if (handle == NULL) {
     fprintf(stderr, "couldn't open device %s: %s\n", dev, errbuf);
     return -1;
